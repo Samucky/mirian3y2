@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1e1e2f; /* Fondo oscuro */
+        }
+        .modal {
+            display: none; /* Ocultar modal por defecto */
+        }
+        .modal-content {
+            background-color: #2c2c3f; /* Fondo del modal */
+            color: #ffffff; /* Texto blanco */
+        }
+        .close {
+            cursor: pointer;
+        }
+    body {
+      background-color: #1e1e2f;
+      color: #ffffff;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      background-color: #2c2c3f;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #10b981;
+    }
+    nav a {
+      margin-left: 20px;
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #10b981;
+    }
+    .active {
+      color: #10b981;
+    }
+    .car-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .car {
+      width: 300px;
+      height: 150px;
+      background-color: white;
+      border-radius: 15px;
+      position: relative;
+    }
+    .car::before, .car::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background-color: black;
+      border-radius: 50%;
+      bottom: -30px;
+    }
+    .car::before {
+      left: 30px;
+    }
+    .car::after {
+      right: 30px;
+    }
+    .queue-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .queue-car {
+      width: 100px;
+      height: 50px;
+      background-color: gray;
+      border-radius: 15px;
+      margin-right: 10px;
+    }
+    .alert-message {
+      text-align: center;
+      background-color: #2c2c3f;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+    .color-selector {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .color-button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin: 5px;
+      transition: transform 0.2s;
+    }
+    .color-button:hover {
+      transform: scale(1.1);
+    }
+    .color-table {
+      margin: 30px auto;
+      width: 80%;
+      background-color: #2c2c3f;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .color-table th, .color-table td {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+    .color-table th {
+      color: #10b981;
+    }
+    .final-message {
+      text-align: center;
+      margin-top: 20px;
+      color: black; /* Cambia el color del texto a negro */
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="#" class="logo">COLAS Y PILAS</a>
+    <nav>
+      <a href="/Index.html">Inicio</a>
+      <a href="../Ventanilla/index.html" class="active">Ventanilla</a>
+      <a href="/Juego de pintar/juego.html">Pintar coches</a>
+      <a href="../Estacionamiento/estacionamiento.html">Estacionamiento</a>
+     
+    </nav>
+  </header>
+
+    <main class="container mx-auto p-5">
+        <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Datos del Cliente</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="clientName" class="block text-gray-300">Cliente</label>
+                    <input type="text" id="clientName" class="w-full p-2 bg-gray-700 text-white rounded">
+                </div>
+                <div>
+                    <label for="movementType" class="block text-gray-300">Movimiento</label>
+                    <select id="movementType" class="w-full p-2 bg-gray-700 text-white rounded">
+                        <option value="Pago de servicio">Pago de servicio</option>
+                        <option value="Depósito">Depósito</option>
+                        <option value="Retiro">Retiro</option>
+                        <option value="Compra de tiempo-aire">Compra de tiempo-aire</option>
+                        <option value="Consulta de saldo">Consulta de saldo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-around mt-6">
+                <button id="addButton" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-400 transition">Agregar a la Cola</button>
+                <button id="attendButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 transition">Atender en Ventanilla</button>
+                <button id="exitButton" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-400 transition">Salida del sistema</button>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <h3 class="text-lg font-semibold text-white">Cola de Clientes</h3>
+            <table class="min-w-full bg-gray-700 rounded-lg mt-4">
+                <thead>
+                    <tr>
+                        <th class="text-left py-2 px-4 text-gray-300">No. Turno</th>
+                        <th class="text-left py-2 px-4 text-gray-300">Cliente</th>
+                        <th class="text-left py-2 px-4 text-gray-300">Tipo Movimiento</th>
+                        <th class="text-left py-2 px-4 text-gray-300">Hora Llegada</th>
+                    </tr>
+                </thead>
+                <tbody id="queueBody" class="text-white">
+                    <!-- Los datos de la cola se insertarán aquí -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Modal: Agregar Cliente -->
+    <div id="addClientModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="modal-content p-5 rounded-lg shadow-lg">
+            <span class="close text-red-500">&times;</span>
+            <h3 class="text-lg font-semibold">Se agrega un cliente al final de la cola</h3>
+            <div class="modal-body mt-4 text-gray-300">
+                <p>Cliente formado en la cola:</p>
+                <p>No Turno: <span id="modalTurn"></span></p>
+                <p>Nombre: <span id="modalName"></span></p>
+                <p>Tipo de Movimiento: <span id="modalMovement"></span></p>
+                <p>Hora de llegada: <span id="modalArrivalTime"></span></p>
+            </div>
+            <button id="acceptButton" class="bg-green-500 text-white py-2 rounded hover:bg-green-400 mt-4">Aceptar</button>
+        </div>
+    </div>
+
+    <!-- Modal: Tiempo de espera -->
+    <div id="waitTimeModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="modal-content p-5 rounded-lg shadow-lg">
+            <span class="close text-red-500">&times;</span>
+            <h3 class="text-lg font-semibold">Tiempo de espera en la cola</h3>
+            <div class="modal-body mt-4 text-gray-300">
+                <p>Cliente atendido: <span id="attendedClient"></span></p>
+                <p>Tiempo de espera en la cola: <span id="waitTime"></span> segundos</p>
+            </div>
+            <button id="acceptButton2" class="bg-green-500 text-white py-2 rounded hover:bg-green-400 mt-4">Aceptar</button>
+        </div>
+    </div>
+    <script>
+      const menuToggle = document.getElementById('menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const colasToggle = document.getElementById('colas-toggle');
+      const colasMenu = document.getElementById('colas-menu');
+      const pilasToggle = document.getElementById('pilas-toggle');
+      const pilasMenu = document.getElementById('pilas-menu');
+
+      menuToggle.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+      });
+
+      colasToggle.addEventListener('click', () => {
+          colasMenu.classList.toggle('hidden');
+      });
+
+      pilasToggle.addEventListener('click', () => {
+          pilasMenu.classList.toggle('hidden');
+      });
+  </script>
+
+    <script src="script.js"></script>
+</body>
+</html>

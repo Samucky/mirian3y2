@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Portfolio Website</title>
+    <style>
+        /* Estilo personalizado para manejar el estado activo del menú */
+        .menu-item {
+            display: none;
+        }
+        @media (min-width: 640px) {
+            .menu-item {
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-800 text-white">
+
+    <header class="flex justify-between items-center p-5">
+        <a href="#" class="text-2xl font-bold text-green-400">COLAS Y PILAS</a>
+        <div class="md:hidden">
+            <button id="menu-toggle" class="text-gray-200 focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <nav class="hidden md:flex space-x-4">
+            <a href="/Index.html" class="block hover:text-green-400">Inicio</a>
+
+            <div class="relative">
+                <button id="colas-toggle" class="hover:text-green-400 focus:outline-none">
+                    Colas <i class="fas fa-caret-down"></i>
+                </button>
+                <div id="colas-menu" class="absolute left-0 hidden mt-2 bg-gray-700 p-2 rounded shadow-lg">
+                    <a href="./Ventanilla/index.html" class="block hover:text-green-400">Ventanilla</a>
+                    <a href="./Juego de pintar/juego.html" class="block hover:text-green-400">Pintar coches</a>
+                    <a href="./Estacionamiento/estacionamiento.html" class="block hover:text-green-400">Estacionamiento</a>
+
+                </div>
+            </div>
+            <div class="relative">
+                <button id="pilas-toggle" class="hover:text-green-400 focus:outline-none" onclick="window.location.href='pilas/pilas.html'">
+                    Pilas
+                </button>
+            </div>
+                
+               
+        </nav>
+    </header>
+
+
+    <section class="flex flex-col items-center justify-center h-screen text-center">
+        <div class="home-img mb-6">
+            <img src="#" alt="" class="rounded-lg shadow-lg">
+        </div>
+        <div class="home-content max-w-xl">
+            <h1 class="text-3xl font-semibold mb-4">Tema: <span class="text-green-400">Colas y Pilas</span></h1>
+            <p class="mb-4">Las colas son una estructura de datos que procesan elementos en orden de llegada. Las operaciones principales son encolar, desencolar, ver el primer elemento y comprobar si está vacía, útiles en la gestión ordenada de tareas o procesos.</p>
+            <p class="mb-4">Las pilas son una estructura de datos que almacenan elementos en orden inverso al de llegada. Las operaciones principales son apilar, desapilar, ver el último elemento y comprobar si está vacía, útiles en la gestión de memoria o en el manejo de funciones.</p>
+           
+        </div>
+    </section>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const colasToggle = document.getElementById('colas-toggle');
+        const colasMenu = document.getElementById('colas-menu');
+        const pilasToggle = document.getElementById('pilas-toggle');
+        const pilasMenu = document.getElementById('pilas-menu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        colasToggle.addEventListener('click', () => {
+            colasMenu.classList.toggle('hidden');
+        });
+
+        pilasToggle.addEventListener('click', () => {
+            pilasMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

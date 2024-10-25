@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pila en JavaScript</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Enlace al archivo CSS -->
+</head>
+<body>
+    <div id="container">
+        <h1>Operaciones con Pila</h1>
+        <button onclick="mostrarIngreso('invertir')">Invertir palabra</button>
+        <button onclick="mostrarIngreso('palindromo')">Verificar si es palíndromo</button>
+        <button onclick="mostrarIngreso('suma')">Sumar números grandes</button>
+        <button onclick="mostrarReemplazo()">Reemplazar valor en la pila</button> <!-- Botón para Reemplazar -->
+        
+        <div class="result" id="resultado"></div>
+        
+        <div id="inputContainer">
+            <input type="text" id="inputField1" placeholder="Ingresa el primer dato aquí">
+            <input type="text" id="inputField2" placeholder="Ingresa el segundo dato aquí" style="display: none;"> <!-- Ocultar el segundo campo inicialmente -->
+            <button id="submitBtn" onclick="procesarIngreso()">Enviar</button>
+        </div>
+
+        <!-- Contenedor para la funcionalidad de reemplazo -->
+        <div id="reemplazoContainer">
+            <input type="text" id="inputPila" placeholder="Introduce la pila (ej. 1,2,3)">
+            <input type="number" id="nuevoValor" placeholder="Introduce el nuevo valor" style="appearance: none;"> <!-- Eliminar las flechas -->
+            <input type="number" id="valorViejo" placeholder="Introduce el valor viejo a reemplazar" style="appearance: none;"> <!-- Eliminar las flechas -->
+            <button id="reemplazarBtn" onclick="realizarReemplazo()">Reemplazar</button>
+            <div class="result" id="resultadoReemplazo" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script> <!-- Enlace al archivo JS -->
+</body>
+</html>

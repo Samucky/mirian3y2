@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Estacionamiento</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <header class="bg-gray-800 p-4 flex justify-between items-center">
+        <a href="#" class="text-2xl font-bold text-green-400">COLAS Y PILAS</a>
+        <nav class="space-x-4">
+            <a href="/Index.html" class="hover:text-green-400">Inicio</a>
+            <a href="../Ventanilla/index.html" class="hover:text-green-400">Ventanilla</a>
+            <a href="../Juego de pintar/juego.html" class="hover:text-green-400">Pintar coches</a>
+            <a href="/Estacionamiento/estacionamiento.html" class="text-green-400">Estacionamiento</a>
+          
+        </nav>
+    </header>
+
+    <div class="container mx-auto mt-8">
+        <!-- Formulario de entrada -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold mb-4">Registro de Entrada de Vehículos</h2>
+            
+            <div class="mb-4">
+                <label for="propietario" class="block text-sm font-medium text-gray-300">Propietario</label>
+                <input type="text" id="propietario" class="mt-1 block w-full px-3 py-2 bg-gray-700 text-white rounded-md" placeholder="Ingresa el nombre del propietario">
+            </div>
+
+            <div class="mb-4">
+                <label for="placa" class="block text-sm font-medium text-gray-300">Placa</label>
+                <input type="text" id="placa" class="mt-1 block w-full px-3 py-2 bg-gray-700 text-white rounded-md" placeholder="Ingresa la matrícula">
+            </div>
+
+            <div class="flex justify-between">
+                <button class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md" onclick="registrarEntrada()">Registrar Entrada</button>
+            </div>
+        </div>
+
+        <!-- Formulario de salida -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg mt-8">
+            <h2 class="text-2xl font-semibold mb-4">Registro de Salida de Vehículos</h2>
+
+            <div class="mb-4">
+                <label for="matricula-salida" class="block text-sm font-medium text-gray-300">Placa del Vehículo</label>
+                <input type="text" id="matricula-salida" class="mt-1 block w-full px-3 py-2 bg-gray-700 text-white rounded-md" placeholder="Ingresa la matrícula del vehículo">
+            </div>
+
+            <div class="flex justify-between">
+                <button class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md" onclick="registrarSalida()">Registrar Salida</button>
+            </div>
+        </div>
+
+        <!-- Tabla de autos registrados -->
+        <div class="mt-8">
+            <h2 class="text-2xl font-semibold mb-4">Autos Registrados</h2>
+            <div class="overflow-x-auto bg-gray-800 p-4 rounded-lg shadow-lg">
+                <table class="w-full text-left text-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2">Placas</th>
+                            <th class="px-4 py-2">Propietario</th>
+                            <th class="px-4 py-2">Entrada</th>
+                        </tr>
+                    </thead>
+                    <tbody id="autos-table-body" class="text-sm">
+                        <!-- Aquí se insertarán las filas de autos registrados -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabla para coches que ya salieron -->
+        <div class="mt-8">
+            <h2 class="text-2xl font-semibold mb-4">Autos que Salieron</h2>
+            <div class="overflow-x-auto bg-gray-800 p-4 rounded-lg shadow-lg">
+                <table class="w-full text-left text-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2">Placas</th>
+                            <th class="px-4 py-2">Salida</th>
+                            <th class="px-4 py-2">Valor Pagado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="autos-salieron-table-body" class="text-sm">
+                        <!-- Aquí se insertarán las filas de autos que ya salieron -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const autosRegistrados = [];
+        const autosSalieron = [];
+        const tarifaPorSegundo = 2;
+
+        function registrarEntrada() {
+            const propietario = document.getElementById('propietario').value;
+            const placa = document.getElementById('placa').value;
+            const entrada = new Date();
+
+            if (propietario && placa) {
+                autosRegistrados.push({ propietario, placa, entrada });
+                actualizarTabla();
+                limpiarCamposEntrada(); // Limpiar los campos después de registrar
+            } else {
+                alert('Por favor, ingresa el nombre del propietario y la placa.');
+            }
+        }
+
+        function registrarSalida() {
+            const placa = document.getElementById('matricula-salida').value;
+            const salida = new Date();
+
+            const autoIndex = autosRegistrados.findIndex(auto => auto.placa === placa);
+            if (autoIndex !== -1) {
+                const entrada = new Date(autosRegistrados[autoIndex].entrada);
+                const segundosEstacionado = Math.floor((salida - entrada) / 1000);
+                const valorPagado = segundosEstacionado * tarifaPorSegundo;
+
+                autosSalieron.push({ placa, salida: salida.toLocaleString(), valorPagado });
+                autosRegistrados.splice(autoIndex, 1);
+                actualizarTabla();
+                actualizarTablaSalieron();
+                limpiarCamposSalida(); // Limpiar el campo de matrícula después de registrar la salida
+            } else {
+                alert('La placa no está registrada.');
+            }
+        }
+
+        function limpiarCamposEntrada() {
+            document.getElementById('propietario').value = '';
+            document.getElementById('placa').value = '';
+        }
+
+        function limpiarCamposSalida() {
+            document.getElementById('matricula-salida').value = '';
+        }
+
+        function actualizarTabla() {
+            const tableBody = document.getElementById('autos-table-body');
+            tableBody.innerHTML = '';
+            autosRegistrados.forEach(auto => {
+                const row = `<tr>
+                    <td class="px-4 py-2">${auto.placa}</td>
+                    <td class="px-4 py-2">${auto.propietario}</td>
+                    <td class="px-4 py-2">${new Date(auto.entrada).toLocaleString()}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function actualizarTablaSalieron() {
+            const tableBody = document.getElementById('autos-salieron-table-body');
+            tableBody.innerHTML = '';
+            autosSalieron.forEach(auto => {
+                const row = `<tr>
+                    <td class="px-4 py-2">${auto.placa}</td>
+                    <td class="px-4 py-2">${auto.salida}</td>
+                    <td class="px-4 py-2">$${auto.valorPagado.toFixed(2)}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+    </script>
+</body>
+</html>

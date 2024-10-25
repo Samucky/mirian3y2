@@ -1,0 +1,90 @@
+/* Estilo general para el cuerpo de la página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Estilo del contenedor principal */
+#container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 400px;
+    text-align: center;
+}
+
+/* Estilo del encabezado */
+h1 {
+    color: #333;
+}
+
+/* Estilo de los botones */
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s;
+    width: 100%; /* Botones ocupan el ancho completo */
+}
+
+/* Efecto hover para los botones */
+button:hover {
+    background-color: #007BFF;
+}
+
+/* Estilo para el cuadro de resultados */
+.result {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #555;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: none; /* Inicialmente oculto */
+}
+
+/* Estilo para el cuadro de entrada */
+#inputContainer {
+    display: none;
+    margin-top: 20px;
+}
+
+/* Estilo para los campos de entrada */
+#inputField1, #inputField2, #inputPila, #nuevoValor, #valorViejo {
+    width: 100%; /* Cuadro de entrada ocupa el ancho completo */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+    margin-bottom: 10px; /* Espacio entre los cuadros de entrada */
+}
+
+/* Estilo para el botón de envío */
+#submitBtn {
+    margin-top: 10px;
+    background-color: #28a745;
+    width: 100%; /* Botón de envío ocupa el ancho completo */
+}
+
+/* Estilo para el cuadro de reemplazo */
+#reemplazoContainer {
+    display: none; /* Ocultar inicialmente */
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    text-align: left; /* Alinear texto a la izquierda */
+}

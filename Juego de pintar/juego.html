@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego de Pintar Coches</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <style>
+    body {
+      background-color: #1e1e2f;
+      color: #ffffff;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      background-color: #2c2c3f;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #10b981;
+    }
+    nav a {
+      margin-left: 20px;
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #10b981;
+    }
+    .active {
+      color: #10b981;
+    }
+    .car-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .car {
+      width: 300px;
+      height: 150px;
+      background-color: white;
+      border-radius: 15px;
+      position: relative;
+    }
+    .car::before, .car::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background-color: black;
+      border-radius: 50%;
+      bottom: -30px;
+    }
+    .car::before {
+      left: 30px;
+    }
+    .car::after {
+      right: 30px;
+    }
+    .queue-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .queue-car {
+      width: 100px;
+      height: 50px;
+      background-color: gray;
+      border-radius: 15px;
+      margin-right: 10px;
+    }
+    .alert-message {
+      text-align: center;
+      background-color: #2c2c3f;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+    .color-selector {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .color-button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin: 5px;
+      transition: transform 0.2s;
+    }
+    .color-button:hover {
+      transform: scale(1.1);
+    }
+    .color-table {
+      margin: 30px auto;
+      width: 80%;
+      background-color: #2c2c3f;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .color-table th, .color-table td {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+    .color-table th {
+      color: #10b981;
+    }
+    .final-message {
+      text-align: center;
+      margin-top: 20px;
+      color: black; /* Cambia el color del texto a negro */
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="#" class="logo">COLAS Y PILAS</a>
+    <nav>
+      <a href="/Index.html">Inicio</a>
+      <a href="../Ventanilla/index.html">Ventanilla</a>
+      <a href="/Juego de pintar/juego.html" class="active">Pintar coches</a>
+      <a href="../Estacionamiento/estacionamiento.html">Estacionamiento</a>
+     
+    </nav>
+  </header>
+
+  <div class="car-container">
+    <div id="car" class="car"></div>
+  </div>
+
+  <div id="alert-message" class="alert-message">
+    ¡El próximo coche debe ser pintado de <span id="required-color"></span>!
+  </div>
+
+  <div class="queue-container" id="queue-container">
+    <!-- Aquí se mostrarán los coches en cola -->
+  </div>
+
+  <div class="color-selector">
+    <button class="color-button" style="background-color: orange;" onclick="paintCar('orange')"></button>
+    <button class="color-button" style="background-color: red;" onclick="paintCar('red')"></button>
+    <button class="color-button" style="background-color: blue;" onclick="paintCar('blue')"></button>
+    <button class="color-button" style="background-color: yellow;" onclick="paintCar('yellow')"></button>
+    <button class="color-button" style="background-color: black;" onclick="paintCar('black')"></button>
+    <button class="color-button" style="background-color: white;" onclick="paintCar('white')"></button>
+  </div>
+
+  <table class="color-table mt-8">
+    <thead>
+      <tr>
+        <th>Color</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody id="color-history">
+      <!-- Aquí se agregarán los coches pintados con su color e imagen -->
+    </tbody>
+  </table>
+
+
+  <script>
+    let currentColor = '';
+    let carQueue = [];
+    const colors = ['orange', 'red', 'blue', 'yellow', 'black', 'white'];
+    
+    // Función para seleccionar un color aleatorio
+    function getRandomColor() {
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    // Función para actualizar el color que se debe pintar
+    function updateRequiredColor() {
+      currentColor = getRandomColor();
+      const requiredColorElement = document.getElementById('required-color');
+      requiredColorElement.textContent = currentColor;
+      requiredColorElement.style.color = currentColor;  // Cambiar el color del texto al color seleccionado
+    }
+
+    // Función para pintar el coche
+    function paintCar(color) {
+      if (color === currentColor) {
+        // Cambiar el color del coche
+        document.getElementById('car').style.backgroundColor = color;
+
+        // Añadir el coche pintado al historial
+        const now = new Date().toLocaleString();
+        const historyTable = document.getElementById('color-history');
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `<td>${color}</td><td>${now}</td>`;
+        historyTable.appendChild(newRow);
+
+        // Eliminar el coche de la cola
+        if (carQueue.length > 0) {
+          carQueue.shift();
+          updateQueue();
+        }
+
+        // Actualizar el color requerido
+        updateRequiredColor();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Color incorrecto',
+          text: `¡Debes pintar el coche de color ${currentColor}!`
+        });
+      }
+    }
+
+    // Función para añadir un coche a la cola cada 8 segundos
+    function addCarToQueue() {
+      if (carQueue.length >= 3) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Has perdido',
+          text: 'Se han acumulado 3 coches sin pintar.'
+        });
+        clearInterval(queueInterval);
+        return;
+      }
+      carQueue.push('gray');
+      updateQueue();
+    }
+
+    // Función para actualizar la cola de coches
+    function updateQueue() {
+      const queueContainer = document.getElementById('queue-container');
+      queueContainer.innerHTML = ''; // Limpiar la cola actual
+      carQueue.forEach(() => {
+        const queueCar = document.createElement('div');
+        queueCar.classList.add('queue-car');
+        queueContainer.appendChild(queueCar);
+      });
+    }
+
+    // Inicializar el juego
+    updateRequiredColor();
+    const queueInterval = setInterval(addCarToQueue, 8000);
+  </script>
+</body>
+</html>
